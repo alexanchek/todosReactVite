@@ -38,7 +38,7 @@ const todoSlice = createSlice({
         state.loading = true;
         state.error = '';
       })
-      .addCase(getTodosList.fulfilled, (state, action) => {
+      .addCase(getTodosList.fulfilled, (state, action: PayloadAction<IToDo[]>) => {
         state.loading = false;
         state.todos = action.payload.slice(0, 10);
       })
