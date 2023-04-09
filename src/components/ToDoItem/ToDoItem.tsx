@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { setMarkedTodo, removeTodo, updateTodo  } from '../../store/reducers/todoSlice';
@@ -99,4 +99,4 @@ const ToDoItem: FC<IToDoItem> = ({ title, completed, id }) => {
   );
 };
 
-export default ToDoItem;
+export default memo(ToDoItem);
