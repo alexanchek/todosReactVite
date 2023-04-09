@@ -1,5 +1,3 @@
-import { Dispatch } from "react";
-
 export interface IToDo {
   id: number;
   title: string;

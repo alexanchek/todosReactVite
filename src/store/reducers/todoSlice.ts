@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IToDo, IToDoSlice } from "../../interfaces/IToDo.interface";
+import { RootState } from "..";
+import { IToDo } from "../../interfaces/IToDo.interface";
 import { getTodosList } from "../actions/getTodos";
 
 export type ISortType = 'active' | 'completed' | 'all';
@@ -22,11 +23,26 @@ const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    setTodos: (state, action: PayloadAction<IToDo[]>) => {
-      state.todos = action.payload;
+    setMarkedTodo: (state, action: PayloadAction<{id: number}>) => {
+      const currentTodo = state.todos.find(item => item.id === action.payload.id);
+      
+      if (currentTodo) {
+        currentTodo.completed = !currentTodo.completed;
+      }
+    },
+    removeTodo: (state, action: PayloadAction<{id: number}>) => {
+      const findedIndex = state.todos.findIndex(todo => todo.id === action.payload.id);
+      state.todos = [ ...state.todos.slice(0, findedIndex), ...state.todos.slice(findedIndex + 1)];
     },
     addTodo: (state, action: PayloadAction<IToDo>) => {
-      state.todos = [action.payload, ...state.todos];
+      state.todos.unshift(action.payload);
+    },
+    updateTodo: (state, action: PayloadAction<{id: number, title: string}>) => {
+      const updatedTodo = state.todos.find(todo => todo.id === action.payload.id);
+      
+      if (updatedTodo) {
+        updatedTodo.title = action.payload.title;
+      }
     },
     setSortType: (state, action: PayloadAction<ISortType>) => {
       state.sortType = action.payload;
@@ -50,9 +66,13 @@ const todoSlice = createSlice({
 });
 
 export const {
-  setTodos,
   addTodo,
+  updateTodo,
+  setMarkedTodo,
+  removeTodo,
   setSortType,
 } = todoSlice.actions;
 
 export default todoSlice.reducer;
+
+export const selectAllTodos = (state: RootState) => state.todos.todos;

@@ -1,42 +1,28 @@
-import React, { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
-import { setTodos } from '../../store/reducers/todoSlice';
+import { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store';
+import { setMarkedTodo, removeTodo, updateTodo  } from '../../store/reducers/todoSlice';
 import { IToDoItem } from './TodoItem.interface';
 
 const ToDoItem: FC<IToDoItem> = ({ title, completed, id }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { todos } = useSelector((state: RootState) => state.todos);
 
   const [input, setInput] = useState<boolean>(false);
   const [value, setValue] = useState<string>(title);
   const [tempValue, setTempValue] = useState<string>(title);
 
   const onClickMarked = (id: number) => {
-    const newTodos = todos.map(todo => {
-      if (todo.id === id) {
-        return { ...todo, completed: !completed };
-      }
-
-      return todo;
-    });
-    dispatch(setTodos(newTodos));
-    setInput(false);
-  }
+    dispatch(setMarkedTodo({id}));
+  };
 
   const onClickRemove = (id: number) => {
-    const newTodos = todos.filter(todo => todo.id !== id);
-    dispatch(setTodos(newTodos));
+    dispatch(removeTodo({id}));
   };
 
   const toggleEdit = () => {
     setInput(!input);
     setTempValue(!input ? value : '');
-  }
-
-  const saveTodo = () => {
-
-  }
+  };
 
   return (
     <div className="row px-3 align-items-center todo-item rounded">
@@ -72,8 +58,11 @@ const ToDoItem: FC<IToDoItem> = ({ title, completed, id }) => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => {
+            const target = e.target as HTMLInputElement;
+
             if (e.code === 'Enter') {
               setInput(false);
+              dispatch(updateTodo({ id, title: target.value }))
             }
 
             if (e.code === 'Escape') {

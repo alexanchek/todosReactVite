@@ -9,8 +9,8 @@ import ToDoList from './ToDoList/ToDoList'
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { todos } = useSelector((state: RootState) => state.todos);
 
+  // let's get initial todos
   useEffect(() => {
     dispatch(getTodosList());
   }, []);
@@ -20,9 +20,9 @@ const App = () => {
         <div className="container m-5 p-2 rounded mx-auto bg-light shadow">
           <Header title='Мой список дел' />
           <CreateToDo />
-          <Options />
+          {/* <Options /> */}
           <div className="p-2 mx-4 border-black-25 border-bottom"></div>
-          <ToDoList todos={todos} />
+          <ToDoList  />
         </div>
       </div>
   )

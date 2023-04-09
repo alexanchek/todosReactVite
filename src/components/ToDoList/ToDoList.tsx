@@ -1,11 +1,13 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { IToDo } from '../../interfaces/IToDo.interface';
-import { AppDispatch, RootState } from '../../store';
+import {  RootState } from '../../store';
+import { selectAllTodos } from '../../store/reducers/todoSlice';
 import ToDoItem from '../ToDoItem/ToDoItem';
-import { IToDoList } from './ToDoList.interface';
 
-const ToDoList: FC<IToDoList> = ({ todos }) => {
+const ToDoList = () => {
+  const todos = useSelector(selectAllTodos);
+
   return (
     <div className="row mx-1 px-5 pb-3 w-80">
       <div className="col mx-auto">

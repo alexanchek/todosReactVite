@@ -2,16 +2,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IToDo } from '../../interfaces/IToDo.interface';
 import { AppDispatch, RootState } from '../../store';
-import { ISortType, setSortType, setTodos } from '../../store/reducers/todoSlice';
+import { ISortType, setSortType } from '../../store/reducers/todoSlice';
 
 const Options = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { sortType, todos } = useSelector((state: RootState) => state.todos);
   const [memoTodos, setMemoTodos] = useState<IToDo[]>([]);
-
-  useEffect(() => {
-    console.log(memoTodos);
-  }, [memoTodos])
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setSortType(e.target.value as ISortType));
@@ -22,14 +18,14 @@ const Options = () => {
 
     switch (e.target.value) {
       case 'active': 
-        dispatch(setTodos(memoTodos.length === 0 ? todos.filter(todo => todo.completed === false) : memoTodos.filter(todo => todo.completed === false)))
+        // dispatch(setTodos(memoTodos.length === 0 ? todos.filter(todo => todo.completed === false) : memoTodos.filter(todo => todo.completed === false)))
         break;
         case 'completed': 
         console.log('completed');
-        dispatch(setTodos(memoTodos.length === 0 ? todos.filter(todo => todo.completed === true) : memoTodos.filter(todo => todo.completed === true)))
+        // dispatch(setTodos(memoTodos.length === 0 ? todos.filter(todo => todo.completed === true) : memoTodos.filter(todo => todo.completed === true)))
         break;
       case 'all':
-        dispatch(setTodos(memoTodos));
+        // dispatch(setTodos(memoTodos));
         setMemoTodos([]);
       default:
         break;
